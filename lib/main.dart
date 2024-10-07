@@ -56,8 +56,7 @@ class _SignInDemoState extends State<SignInDemo> {
   @override
   void initState() {
     super.initState();
-    _googleSignIn.onCurrentUserChanged
-        .listen((GoogleSignInAccount? account) async {
+    _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) async {
 // #docregion CanAccessScopes
       // In mobile, being authenticated means being authorized...
       bool isAuthorized = account != null;
@@ -120,8 +119,7 @@ class _SignInDemoState extends State<SignInDemo> {
     }
   }
 
-  Future<void> accessSpecificFile(
-      {String fileId = '1yvsFK8fXsQkX6bkRntPEgeKaCe-W_KH8ZSDs3vEbENQ'}) async {
+  Future<void> accessSpecificFile({String fileId = '1yvsFK8fXsQkX6bkRntPEgeKaCe-W_KH8ZSDs3vEbENQ'}) async {
     try {
       final account = await _googleSignIn.signIn();
 
@@ -138,14 +136,12 @@ class _SignInDemoState extends State<SignInDemo> {
           includeGridData: true,
         );
         var income = "Income";
-        var dropdown = await sheetsApi.spreadsheets.values
-            .get(fileId, "'គម្រោងចំណូល ចំណាយ តុលា 2024'!I24:I1010");
+        var dropdown = await sheetsApi.spreadsheets.values.get(fileId, "'គម្រោងចំណូល ចំណាយ តុលា 2024'!I24:I1010");
         localStraogeService?.saveNameRage(fileId);
         print("Dropdonw $dropdown");
         var getDropdown = localStraogeService?.getDropdownValue(income);
         print("Dropdonw $getDropdown");
-        var responseNameRange =
-            await sheetsApi.spreadsheets.values.get(fileId, income);
+        var responseNameRange = await sheetsApi.spreadsheets.values.get(fileId, income);
         responseNameRange.values?.first.first;
         print(responseNameRange);
         // Iterate through all sheets in the spreadsheet
@@ -198,8 +194,7 @@ class _SignInDemoState extends State<SignInDemo> {
 
         try {
           // Write data to the specified range in the Google Sheet
-          var response = await sheetsApi.spreadsheets.values
-              .update(valueRange, fileId, "Sheet1!A1", valueInputOption: "RAW");
+          var response = await sheetsApi.spreadsheets.values.update(valueRange, fileId, "Sheet1!A1", valueInputOption: "RAW");
 
           print('Data written to Google Sheet successfully!');
         } catch (e) {
@@ -229,8 +224,7 @@ class _SignInDemoState extends State<SignInDemo> {
       print('People API ${response.statusCode} response: ${response.body}');
       return;
     }
-    final Map<String, dynamic> data =
-        json.decode(response.body) as Map<String, dynamic>;
+    final Map<String, dynamic> data = json.decode(response.body) as Map<String, dynamic>;
     final String? namedContact = _pickFirstNamedContact(data);
     setState(() {
       if (namedContact != null) {
@@ -250,8 +244,7 @@ class _SignInDemoState extends State<SignInDemo> {
     if (contact != null) {
       final List<dynamic> names = contact['names'] as List<dynamic>;
       final Map<String, dynamic>? name = names.firstWhere(
-        (dynamic name) =>
-            (name as Map<Object?, dynamic>)['displayName'] != null,
+        (dynamic name) => (name as Map<Object?, dynamic>)['displayName'] != null,
         orElse: () => null,
       ) as Map<String, dynamic>?;
       if (name != null) {
@@ -317,8 +310,10 @@ class _SignInDemoState extends State<SignInDemo> {
             // The user has Authorized all required scopes
             Text(_contactText),
             ElevatedButton(
-              child: const Text('REFRESH'),
-              onPressed: () => _handleGetContact(user),
+              child: const Text('Insert Value'),
+              onPressed: () {
+                insertData("1yvsFK8fXsQkX6bkRntPEgeKaCe-W_KH8ZSDs3vEbENQ");
+              },
             ),
             ElevatedButton(
               child: const Text('Delete dropdown'),
@@ -379,6 +374,25 @@ class _SignInDemoState extends State<SignInDemo> {
 
   void listDropDown() async {
     await localStraogeService?.getDropdownValue("Income");
+  }
+
+  insertData(String fildId) async {
+    var auth = await _currentUser?.authHeaders;
+    if (auth != null) {
+      var client = GoogleAuthClient(auth);
+      var sheetsApi = sheet.SheetsApi(client);
+      //  "'គម្រោងចំណូល ចំណាយ តុលា 2024'!I24:I1010"
+      const sheetId = 'ចំណូល ចំណាយជាក់ស្តែង ';
+      sheet.ValueRange vr = sheet.ValueRange.fromJson({
+        "range": "'$sheetId'!B22:F22",
+        "values": [
+          ["10/7/2024", "បាយកន្លែងកាងា", 1.48, 6000, "KHR", 4061.7]
+        ],
+      });
+
+      // Write data to the sheet
+      await sheetsApi.spreadsheets.values.append(vr, fildId, "'$sheetId'!B22:F22", valueInputOption: 'RAW');
+    }
   }
 }
 
