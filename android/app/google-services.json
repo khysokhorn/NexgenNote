@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "808888806492",
+    "project_id": "nexten-ba1a6",
+    "storage_bucket": "nexten-ba1a6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:808888806492:android:93bdb2a801c3d9bff28a99",
+        "android_client_info": {
+          "package_name": "com.nexgen.note.noteappV2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "808888806492-t12m5067hgn3p2nus1qrjn22efqtiu9u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nexgen.note.noteappV2",
+            "certificate_hash": "51e87aa99fd376d2c0294f8217c6f3c20021f765"
+          }
+        },
+        {
+          "client_id": "808888806492-kj729rkrj87a75vqtaunha3mp22372u9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDh6Yxw3lY3enxtEhqs6hwzXVvar-5g9aQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "808888806492-kj729rkrj87a75vqtaunha3mp22372u9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
