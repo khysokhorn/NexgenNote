@@ -1,0 +1,139 @@
+{
+    "dataValidation": {
+        "condition": {
+            "type": "ONE_OF_RANGE",
+            "values": [
+                {
+                    "userEnteredValue": "='ព័ត៌មាន'!$C$3:$C$4"
+                }
+            ]
+        },
+        "showCustomUi": true,
+        "strict": true
+    },
+    "effectiveFormat": {
+        "backgroundColor": {
+            "blue": 0.92156863,
+            "green": 0.93333334,
+            "red": 0.93333334
+        },
+        "backgroundColorStyle": {
+            "rgbColor": {
+                "blue": 0.92156863,
+                "green": 0.93333334,
+                "red": 0.93333334
+            }
+        },
+        "borders": {
+            "bottom": {
+                "style": "SOLID",
+                "width": 1
+            },
+            "left": {
+                "style": "SOLID",
+                "width": 1
+            },
+            "right": {
+                "style": "SOLID",
+                "width": 1
+            },
+            "top": {
+                "style": "SOLID",
+                "width": 1
+            }
+        },
+        "horizontalAlignment": "LEFT",
+        "hyperlinkDisplayType": "PLAIN_TEXT",
+        "numberFormat": {
+            "pattern": "\"$\"#,##0.00",
+            "type": "NUMBER"
+        },
+        "padding": {
+            "left": 3,
+            "right": 3
+        },
+        "textFormat": {
+            "bold": false,
+            "fontFamily": "Nunito",
+            "fontSize": 10,
+            "foregroundColor": {
+                "blue": 0.3647059,
+                "green": 0.3764706,
+                "red": 0.3764706
+            },
+            "foregroundColorStyle": {
+                "rgbColor": {
+                    "blue": 0.3647059,
+                    "green": 0.3764706,
+                    "red": 0.3764706
+                }
+            },
+            "italic": false,
+            "strikethrough": false,
+            "underline": false
+        },
+        "verticalAlignment": "MIDDLE",
+        "wrapStrategy": "OVERFLOW_CELL"
+    },
+    "effectiveValue": {
+        "stringValue": "USD"
+    },
+    "formattedValue": "USD",
+    "userEnteredFormat": {
+        "backgroundColor": {
+            "blue": 0.92156863,
+            "green": 0.93333334,
+            "red": 0.93333334
+        },
+        "backgroundColorStyle": {
+            "rgbColor": {
+                "blue": 0.92156863,
+                "green": 0.93333334,
+                "red": 0.93333334
+            }
+        },
+        "borders": {
+            "bottom": {
+                "style": "SOLID",
+                "width": 1
+            },
+            "left": {
+                "style": "SOLID",
+                "width": 1
+            },
+            "right": {
+                "style": "SOLID",
+                "width": 1
+            },
+            "top": {
+                "style": "SOLID",
+                "width": 1
+            }
+        },
+        "horizontalAlignment": "LEFT",
+        "numberFormat": {
+            "pattern": "\"$\"#,##0.00",
+            "type": "NUMBER"
+        },
+        "textFormat": {
+            "fontFamily": "Nunito",
+            "fontSize": 10,
+            "foregroundColor": {
+                "blue": 0.3647059,
+                "green": 0.3764706,
+                "red": 0.3764706
+            },
+            "foregroundColorStyle": {
+                "rgbColor": {
+                    "blue": 0.3647059,
+                    "green": 0.3764706,
+                    "red": 0.3764706
+                }
+            }
+        },
+        "verticalAlignment": "MIDDLE"
+    },
+    "userEnteredValue": {
+        "stringValue": "USD"
+    }
+}

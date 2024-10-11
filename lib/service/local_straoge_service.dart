@@ -18,7 +18,6 @@ class LocalStraogeService {
       _favoriteBooksBox = Hive.box<String>(k);
       if (responseNameRange.values != null) {
         for (var value in responseNameRange.values!) {
-
           _favoriteBooksBox?.add(value.first.toString());
         }
       }

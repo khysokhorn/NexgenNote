@@ -1,0 +1,4 @@
+enum ScreenType {
+  SCREEN_WIDGET_REPLACEMENT,
+  SCREEN_WIDGET,
+}

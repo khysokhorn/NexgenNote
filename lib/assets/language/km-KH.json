@@ -1,0 +1,121 @@
+{
+  "general": {
+    "title": "XBank",
+    "notification": "សេចក្តីជូនដំណឹង"
+  },
+  "dialog": {
+    "operationFail": {
+      "title": "Operation Fail",
+      "message": "Something went wrong. Please try again."
+    },
+    "processingRequest": {
+      "title": "Please wait",
+      "message": "We are processing your request"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "changePassword": "Change password",
+    "language": "Language",
+    "clearDraft": "Clear Draft",
+    "signOut": "ចាកចេញ",
+    "all": "All",
+    "off": "Off",
+    "notificationSettings": "Notification Settings",
+    "allowAllNotifications": "Allow all type of notifications",
+    "downloadUploadProgress": "Download/Upload progress",
+    "submitCustomerProfileStatus": "Submitted account status",
+    "announce": "Announcement"
+  },
+  "home": {
+    "appbar": {
+      "home": "Home App bar"
+    }
+  },
+  "button": {
+    "ok": "OK",
+    "cancel": "Cancel",
+    "close": "Close",
+    "go": "Go",
+    "okay": "Okay",
+    "tryAgain": "Try again",
+    "confirm": "Confirm",
+    "search": "Search",
+    "tapDownload": "Tap to Download",
+    "viewDetail": "View details",
+    "remove": "Remove",
+    "saveToDraft": "Save to draft",
+    "saveChanges": "Save Changes",
+    "upload": "Upload",
+    "submit": "Submit",
+    "update": "Update",
+    "keep": "Keep",
+    "deleteForever": "Delete Forever",
+    "discard": "Discard",
+    "continueEditing": "Continue editing",
+    "next": "Next",
+    "previous": "Previous",
+    "viewComments": "View Comments"
+  },
+  "text": {
+    "noNetworkConnection": "No network connection",
+    "reconnectAndRetry": "Please reconnect and try again."
+  },
+  "web": {
+    "currency": {
+      "totalKHR": "KHR សរុប {text}",
+      "totalUSD": "USD សរុប {text}"
+    },
+    "auth": {
+      "userName": "ឈ្មោះគណនី",
+      "password": "លេខសំងាត់",
+      "signIn": "ចូលប្រើ"
+    },
+    "menu": {
+      "dashboard": "ទំព័រដើម",
+      "transaction": "ប្រតិបត្តិការ",
+      "loanschedule": "តារាងសងឥណទាន",
+      "collection": "របាយការណ៍ប្រមូលឥណទាន",
+      "signOut": "ចាកចេញ"
+    },
+    "dialog": {
+      "cancel": "បោះបង់",
+      "confirm": "យល់ព្រម"
+    },
+    "loan": {
+      "index": "#",
+      "loanAcc": "លេខកម្ចី",
+      "currency": "រូបិយប័ណ្ណ",
+      "clientName": "ឈ្មោះអតិថិជន",
+      "phoneNumber": "លេខទូរស័ព្ទ",
+      "balance": "ចំនួនទឹកប្រាក់",
+      "principal": "ប្រាក់ដើមកម្ចី",
+      "interest": "ការប្រាក់",
+      "operationalFee": "ថ្លៃប្រតិបត្តិការ",
+      "total": "សរុប",
+      "khrReceived": "KHR ទទួលបាន",
+      "usdReceived": "USD ទទួលបាន",
+      "totalReceived": "លុយទទួលបានសរុប",
+      "remark": "កំណត់ចំណាំ",
+      "daoTodayTransaction": "ប្រតិបត្តិការប្រចាំថ្ងៃរបស់ CO",
+      "scheduleUpload": "Schedule Upload",
+      "chooseAFile": "ជ្រើសរើសឯកសារ",
+      "noFileSelected": "មិនទាន់មានឯកសារជ្រើសយក",
+      "branch": "សាខា",
+      "village": "ភូមិ",
+      "staffName": "ឈ្មោះបុគ្គលិក",
+      "commune": "ឃុំ",
+      "dao": "CO",
+      "filter": "ស្វែងរក",
+      "collected": "ប្រមូលបាន",
+      "viewDetail": "ព័ត៌មានលម្អិត",
+      "receivedCashKHR": "ទទួលលុយ (KHR)",
+      "receivedCashUSD": "ទទួលលុយ (USD)",
+      "exportPDF": "Export PDF",
+      "exportExcel": "Export Excel",
+      "postStatus": "Post Status"
+    }
+  },
+  "provideCorrectInfo": "Please provide correct information"
+
+}
