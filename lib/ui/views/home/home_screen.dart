@@ -1,97 +1,247 @@
+import 'dart:ui';
+
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gap/gap.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:noteapp/core/constant/general_constants.dart';
 import 'package:noteapp/core/global_function.dart';
-import 'package:noteapp/core/model/Login/login_resposne.dart';
 import 'package:noteapp/core/model/responses/user_profile_res.model.dart';
 import 'package:noteapp/core/utill/app_constants.dart';
 import 'package:noteapp/core/utill/colors.dart';
 import 'package:noteapp/core/viewmodel/home_view_model.dart';
-import 'package:noteapp/ui/widgets/view_model_state_overlay.dart';
-import 'package:flutter/material.dart';
+import 'package:noteapp/ui/widgets/alert_dialog.dart';
+import 'package:noteapp/ui/widgets/notification_snackbar.dart';
+import 'package:noteapp/ui/widgets/primary_button.dart';
+import 'package:pie_menu/pie_menu.dart';
 import 'package:stacked/stacked.dart';
 
-class HomeScreen extends StackedView<HomeViewModel> {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget builder(BuildContext context, HomeViewModel viewModel, Widget? child) {
-    return ViewModelStateOverlay<HomeViewModel>(
-        child: Scaffold(
-      body: SafeArea(
-        child: Container(
-          margin: const EdgeInsets.only(top: 8, left: 8, right: 8),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                    height: 64,
-                    width: 64,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                    ),
-                    child: Image.asset("lib/assets/images/xbank.jpg"),
-                  ),
-                  const SizedBox(
-                    width: 16,
-                  ),
-                  CustomAppbar(
-                    title: "X-App",
-                    userRole: viewModel.userRole,
-                    userProfileModel: viewModel.userProfileModel,
-                  ),
-                  const Spacer(),
-                  IconButton(
-                      onPressed: () async {
-                        await viewModel.getdataInit();
-                      },
-                      icon: const Icon(Icons.sync)),
-                  Container(
-                    width: 12,
-                    height: 12,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: viewModel.isConnected ? Colors.green : COLOR_GRAY,
-                    ),
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
+  final _tabName = ["hello", "Test"];
+  int currentPage = 0;
+  double tabBarHeight = 80.0;
+  late TabController tabController;
+  late AnimationController _hideTabBarAnimationController;
+  late Animation<double> _offsetAnimation;
+  late AnimationController _borderRadiusAnimationController;
+  late Animation<double> _borderRadiusAnimation;
+  final List<String> tabNames = [
+    'Today Expend',
+    'Summary',
+  ];
+
+  final List<Widget> _kTabPages = <Widget>[Container(), Container()];
+
+  @override
+  void initState() {
+    super.initState();
+    tabController = TabController(
+      length: tabNames.length,
+      vsync: this,
+    );
+
+    _hideTabBarAnimationController = AnimationController(
+      duration: duration,
+      vsync: this,
+    );
+    _offsetAnimation = Tween(begin: 0.0, end: tabBarHeight)
+        .animate(_hideTabBarAnimationController)
+      ..addListener(() {
+        setState(() {});
+      });
+    _borderRadiusAnimationController = AnimationController(
+      duration: duration,
+      vsync: this,
+    );
+    _borderRadiusAnimation =
+        Tween(begin: 128.0, end: 0.0).animate(_borderRadiusAnimationController)
+          ..addListener(() {
+            setState(() {});
+          });
+    tabController = TabController(
+      length: tabNames.length,
+      vsync: this,
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _hideTabBarAnimationController.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    bool isPortraitOrientation =
+        MediaQuery.orientationOf(context) == Orientation.portrait;
+
+    final List<Widget> tabIcons = [
+      Icon(HugeIcons.strokeRoundedBitcoinEye),
+      Icon(HugeIcons.strokeRoundedDashboardBrowsing),
+      AnimatedContainer(
+        duration: duration,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(
+            color: scaffoldBgColor,
+            width: 1.5,
+          ),
+        ),
+        child: CircleAvatar(
+          radius: 16.0,
+          backgroundColor: seedColorPalette.shade700,
+          backgroundImage: AssetImage('lib/assets/images/note/note_orange.png'),
+        ),
+      )
+    ];
+
+    return PieCanvas(
+      theme: PieTheme(
+        delayDuration: duration,
+        overlayStyle: PieOverlayStyle.around,
+        buttonThemeHovered: PieButtonTheme(
+          backgroundColor: seedColorPalette.shade50,
+          iconColor: seedColor,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            boxShadow: [shadow],
+            color: seedColorPalette.shade100,
+          ),
+        ),
+        pointerColor: Colors.transparent,
+        angleOffset: 5,
+        childTiltEnabled: false,
+        rightClickShowsMenu: true,
+        tooltipTextStyle: AppTextStyles.h2,
+      ),
+      child: Scaffold(
+        bottomNavigationBar: PreferredSize(
+          preferredSize: Size.fromHeight(88.0),
+          child: UnconstrainedBox(
+            child: AnimatedContainer(
+              duration: duration,
+              curve: Curves.decelerate,
+              height: isPortraitOrientation
+                  ? tabBarHeight - _offsetAnimation.value
+                  : 56 - _offsetAnimation.value,
+              constraints: BoxConstraints(
+                // maxWidth: mediaWidth(context) - 50.0,
+                maxWidth: isPortraitOrientation
+                    ? mediaWidth(context) - 50.0
+                    : mediaWidth(context) / 1.5,
+              ),
+              margin: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 16.0),
+              clipBehavior: Clip.antiAlias,
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.7),
+                borderRadius:
+                    BorderRadius.circular(_borderRadiusAnimation.value),
+                boxShadow: [
+                  BoxShadow(
+                    color: seedColorPalette.shade100.withOpacity(0.5),
+                    blurRadius: 8.0,
+                    offset: Offset(0, 4.0),
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 16,
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 16.0, sigmaY: 16.0),
+                child: TabBar(
+                  controller: tabController,
+                  isScrollable: true,
+                  physics: const BouncingScrollPhysics(),
+                  splashBorderRadius: borderRadius * 5,
+                  overlayColor:
+                      WidgetStateProperty.all<Color>(seedColorPalette.shade100),
+                  splashFactory: InkRipple.splashFactory,
+                  indicator: isPortraitOrientation
+                      ? Theme.of(context).tabBarTheme.indicator
+                      : BoxDecoration(
+                          color: seedColor,
+                          borderRadius: borderRadius * 4,
+                        ),
+                  onTap: (index) {
+                    setState(() {
+                      currentPage = index;
+                    });
+                    if (index == 2) {
+                      Future.delayed(duration * 1.5, () {
+                        showDefaultDialog(
+                          context: context,
+                          icon: HugeIcons.strokeRoundedChatBot,
+                          title: "Before you proceed...",
+                          message: "Clezi is a bot that can help you with any "
+                              "questions you have. Please do not share any personal "
+                              "information with Clezi.",
+                          actions: [
+                            PrimaryButton.label(
+                              onPressed: () {
+                                context.popRoute();
+                              },
+                              label: "Agree and continue",
+                            )
+                          ],
+                        );
+                      });
+                    }
+                  },
+                  tabs: List.generate(
+                    _kTabPages.length,
+                    (index) {
+                      final icon = tabIcons[index];
+                      final title = tabNames[index];
+                      return TabBuilder(
+                        index: index,
+                        currentIndex: currentPage,
+                        icon: icon,
+                        title: title,
+                      );
+                    },
+                  ),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 24.0, vertical: 4.0),
+                  dividerHeight: 0.0,
+                ),
               ),
-              Expanded(child: viewModel.homeView[viewModel.currentIndex])
-            ],
+            ),
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        unselectedItemColor: Colors.black,
-        selectedItemColor: Colors.green,
-        type: BottomNavigationBarType.shifting,
-        items: const [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home_outlined), label: 'Home'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.currency_exchange), label: 'Transction'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.notifications_outlined), label: 'Notification'),
-          BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Setting'),
-        ],
-        currentIndex: viewModel.currentIndex,
-        onTap: viewModel.onTabChange,
+    );
+  }
+}
+
+class IconBottomItem extends StatelessWidget {
+  const IconBottomItem({
+    super.key,
+    required this.icon,
+  });
+  final HugeIcon icon;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 48,
+      height: 48,
+      margin: const EdgeInsets.symmetric(
+        horizontal: 16,
       ),
-    ));
-  }
-
-  @override
-  HomeViewModel viewModelBuilder(BuildContext context) {
-    return HomeViewModel();
-  }
-
-  @override
-  void onViewModelReady(HomeViewModel viewModel) async {
-    super.onViewModelReady(viewModel);
-    await viewModel.getInstance();
+      alignment: AlignmentDirectional.center,
+      decoration:
+          const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
+      child: IconButton(
+        onPressed: () {},
+        icon: icon,
+      ),
+    );
   }
 }
 
@@ -421,6 +571,7 @@ class HomeView extends ViewModelWidget<HomeViewModel> {
 class MenuItemView extends StatelessWidget {
   final String title;
   final Icon icon;
+
   const MenuItemView({
     super.key,
     required this.title,
@@ -446,6 +597,130 @@ class MenuItemView extends StatelessWidget {
           ),
         )
       ],
+    );
+  }
+}
+
+class TabBuilder extends StatelessWidget {
+  const TabBuilder({
+    super.key,
+    required this.icon,
+    required this.title,
+    required this.currentIndex,
+    required this.index,
+  });
+
+  final Widget icon;
+  final String title;
+  final int index, currentIndex;
+
+  @override
+  Widget build(BuildContext context) {
+    if (index == currentIndex) {
+      // Community tab
+      if (index == 1) {
+        return PieMenu(
+          onPressed: () {
+            // show flutter toast
+            Fluttertoast.showToast(
+              msg: "Long press for options",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 1,
+              backgroundColor: disabledColor.withOpacity(0.8),
+              textColor: scaffoldBgColor,
+              fontSize: 16.0,
+            );
+          },
+          onToggle: (menuOpen) {
+            if (menuOpen) {
+              HapticFeedback.lightImpact();
+            }
+          },
+          actions: [
+            PieAction(
+              tooltip: const Text('Submit procedure'),
+              onSelect: () {
+                showNotificationSnackBar(
+                  context: context,
+                  backgroundColor: successColor,
+                  icon: successIcon,
+                  message: "Submit procedure selected successfully",
+                );
+              },
+              child: const Icon(HugeIcons.strokeRoundedSent),
+            ),
+            PieAction(
+              tooltip: const Text('Request procedure'),
+              onSelect: () {
+                showNotificationSnackBar(
+                  context: context,
+                  backgroundColor: successColor,
+                  icon: successIcon,
+                  message: "Request procedure selected successfully",
+                );
+              },
+              child: const Icon(HugeIcons.strokeRoundedIdea),
+            ),
+          ],
+          child: Animate(
+            effects: [
+              FadeEffect(),
+            ],
+            child: Tab(
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  icon,
+                  const Gap(8.0),
+                  Text(
+                    title,
+                    style: AppTextStyles.body,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      }
+
+      return Tooltip(
+        message: title,
+        child: Tab(
+          child: Animate(
+            effects: [
+              FadeEffect(),
+            ],
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                icon,
+                Gap(8.0),
+                Text(
+                  title,
+                  style: AppTextStyles.body,
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
+    return Tooltip(
+      message: title,
+      child: Tab(
+        child: Row(
+          children: [
+            icon,
+            Gap(8.0),
+            Text(
+              title,
+              style: AppTextStyles.body,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

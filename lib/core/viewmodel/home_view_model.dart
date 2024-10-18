@@ -12,6 +12,7 @@ import 'package:noteapp/core/model/responses/collection_report_res.model.dart'
 import 'package:noteapp/core/model/responses/dashboard_home_res.model.dart'
     as dashboardHomeModel;
 import 'package:noteapp/core/model/responses/json_place_holder.dart';
+
 // import 'package:noteapp/core/modschedule_res.model.dart' as laonList;
 import 'package:noteapp/core/model/responses/setting_res.model.dart';
 import 'package:noteapp/core/model/responses/user_profile_res.model.dart';
@@ -19,7 +20,6 @@ import 'package:noteapp/core/services/api_provider_service.dart';
 import 'package:noteapp/core/services/global_service.dart';
 import 'package:noteapp/core/services/local_service.dart';
 import 'package:noteapp/core/web_service/api_provider_service.web.dart';
-import 'package:noteapp/ui/views/Password/change_password.dart';
 import 'package:noteapp/ui/views/home/app_transction.dart';
 import 'package:noteapp/ui/views/home/home_screen.dart';
 import 'package:noteapp/ui/views/Password/login.dart';
@@ -74,38 +74,7 @@ class HomeViewModel extends BaseViewModel {
     setInitialised(true);
     notifyListeners();
     await LocalService().getInstance();
-
-    homeView.clear();
-    homeView.addAll([
-      const HomeView(),
-      AppTransctions(
-        viewModel: this,
-      ),
-      Container(),
-      Column(
-        children: [
-          ListTile(
-            title: const Text("Logout"),
-            leading: const Icon(Icons.exit_to_app_sharp),
-            onTap: () async {
-              await LocalService().deleteAll();
-              await startNewScreenAnimation(
-                  ScreenType.SCREEN_WIDGET_REPLACEMENT, LoginView());
-            },
-          ),
-          ListTile(
-            title: const Text("Change Password"),
-            leading: const Icon(Icons.phonelink_lock_rounded),
-            onTap: () async {
-              await LocalService().deleteAll();
-              await startNewScreenAnimation(
-                  ScreenType.SCREEN_WIDGET_REPLACEMENT, ChangePasswordView());
-            },
-          )
-        ],
-      ),
-    ]);
-    await getdataInit();
+    setBusy(false);
   }
 
   Future<void> getdataInit() async {
@@ -329,6 +298,7 @@ class HomeViewModel extends BaseViewModel {
   }
 
   PostLoanCollectionLocalLists? data;
+
   Future<void> syncQueuedDataToServerOffline() async {
     if (isConnected) {
       data = postLoanCollectionModelLocalFromJson(await LocalService()

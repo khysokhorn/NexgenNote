@@ -2,6 +2,7 @@ import 'package:noteapp/ui/views/Password/login.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:noteapp/ui/views/home/get_start_screen.dart';
 import 'core/services/global_service.dart';
 import 'core/utill/app_constants.dart';
 import 'core/utill/colors.dart';
@@ -26,8 +27,18 @@ void main() async {
   );
 }
 
+class MyAppV2 extends StatelessWidget {
+  const MyAppV2({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
+  }
+}
+
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
@@ -64,7 +75,7 @@ class MyApp extends StatelessWidget {
           inputDecorationTheme: Theme.of(context).inputDecorationTheme,
         ),
         home: const Scaffold(
-          body: LoginView(),
+          body: GetStartScreen(),
         ),
         navigatorKey: GlobalService().navigator,
       ),

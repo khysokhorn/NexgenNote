@@ -153,6 +153,15 @@ dependencies:
   flutter_libphonenumber: ^2.2.2
   intl: ^0.19.0
   package_info_plus: ^8.0.2
+  introduction_screen: ^3.1.14
+  flutter_animate: ^4.5.0
+  hugeicons: ^0.0.7
+  gap: ^3.0.1
+  palette_generator: ^0.3.3+4
+  lucide_icons: ^0.257.0
+  top_snackbar_flutter: ^3.1.0
+  pie_menu: ^3.2.7
+  fluttertoast: ^8.2.8
 
 dev_dependencies:
   flutter_test:
@@ -180,9 +189,9 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - lib/assets/images/
+    - lib/assets/images/note/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

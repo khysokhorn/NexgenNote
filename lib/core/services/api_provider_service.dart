@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
-
+import 'package:http/http.dart' as http;
 import '../dio_interceptors/authentication_interceptor.dart';
 import '../enums/local_service.dart';
 import '../model/error/no_network_connection_error.dart';
@@ -13,8 +13,10 @@ import 'network_info_service.dart';
 class ApiProviderService {
   ApiProviderService._apiConstructor();
 
-  static final ApiProviderService _instance = ApiProviderService._apiConstructor();
-  static final LocalService _localService = LocalService().getInstance(); 
+  static final ApiProviderService _instance =
+      ApiProviderService._apiConstructor();
+  static final LocalService _localService = LocalService().getInstance();
+
   factory ApiProviderService() {
     return _instance;
   }
@@ -46,7 +48,7 @@ class ApiProviderService {
   }
 
   Dio createDioInstance() {
-    print("Token ${_dio.options.headers["Authorization"]}"); 
+    print("Token ${_dio.options.headers["Authorization"]}");
     Dio dio = Dio(
       BaseOptions(
         connectTimeout: const Duration(minutes: 5),
@@ -72,7 +74,8 @@ class ApiProviderService {
       );
     }
 
-    dio.interceptors.add(InterceptorsWrapper(onRequest: (options, handler) async {
+    dio.interceptors
+        .add(InterceptorsWrapper(onRequest: (options, handler) async {
       if (await NetworkInfoService().isConnected) {
         return handler.next(options); //continue
       } else {
@@ -110,7 +113,8 @@ class ApiProviderService {
       );
     }
 
-    _dio.interceptors.add(InterceptorsWrapper(onRequest: (options, handler) async {
+    _dio.interceptors
+        .add(InterceptorsWrapper(onRequest: (options, handler) async {
       if (await NetworkInfoService().isConnected) {
         return handler.next(options); //continue
       } else {
@@ -135,21 +139,24 @@ class ApiProviderService {
     _dio.interceptors.add(AuthenticationInterceptor());
   }
 
-  setUserAccessToken(String accessToken, {int? expiredDateTime}) {
+  setUserAccessToken(String accessToken, String  xGoogleAuthUser, {int? expiredDateTime}) {
     if (expiredDateTime != null) {
-      LocalService().saveValue(LocalDataFieldName.USER_TOKEN_EXPIRED_DATETIME, expiredDateTime);
+      LocalService().saveValue(
+          LocalDataFieldName.USER_TOKEN_EXPIRED_DATETIME, expiredDateTime);
     }
     LocalService().saveValue(LocalDataFieldName.USER_TOKEN, accessToken);
     _dio.options.headers = {
       "Content-Type": "application/json",
       "Accept": "application/json",
-      "Authorization": "Bearer $accessToken",
+      "Authorization": accessToken,
+      "X-Goog-AuthUser": xGoogleAuthUser,
     };
   }
 
   setUserAccessTokenDateTime(String accessToken, {DateTime? expiredDateTime}) {
     if (expiredDateTime != null) {
-      LocalService().saveValue(LocalDataFieldName.USER_TOKEN_EXPIRED_DATETIMEV2, expiredDateTime.toIso8601String());
+      LocalService().saveValue(LocalDataFieldName.USER_TOKEN_EXPIRED_DATETIMEV2,
+          expiredDateTime.toIso8601String());
     }
     LocalService().saveValue(LocalDataFieldName.USER_TOKEN, accessToken);
     _dio.options.headers = {
@@ -175,12 +182,26 @@ class ApiProviderService {
   }
 
   copyAuthorizationTo(RequestOptions otherOptions) {
-    otherOptions.headers['Authorization'] = _dio.options.headers['Authorization'];
+    otherOptions.headers['Authorization'] =
+        _dio.options.headers['Authorization'];
   }
 
   replaceNewAuthorizationIfDirty(RequestOptions otherOptions) {
-    if (otherOptions.headers['Authorization'] != _dio.options.headers['Authorization']) {
-      otherOptions.headers['Authorization'] = _dio.options.headers['Authorization'];
+    if (otherOptions.headers['Authorization'] !=
+        _dio.options.headers['Authorization']) {
+      otherOptions.headers['Authorization'] =
+          _dio.options.headers['Authorization'];
     }
+  }
+}
+
+class GoogleAuthClient extends http.BaseClient {
+  final Map<String, String> _headers;
+  final http.Client _client = new http.Client();
+
+  GoogleAuthClient(this._headers);
+
+  Future<http.StreamedResponse> send(http.BaseRequest request) {
+    return _client.send(request..headers.addAll(_headers));
   }
 }

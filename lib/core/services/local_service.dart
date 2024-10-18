@@ -72,7 +72,7 @@ class LocalService {
     _localObjectBox.put(localDataFieldName.toString(), value);
   }
 
-  dynamic getSavedValue(LocalDataFieldName localDataFieldName) async {
+  getSavedValue(LocalDataFieldName localDataFieldName) async {
     if (_localObjectBox == null) {
       await getInstance();
     }
