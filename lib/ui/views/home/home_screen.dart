@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_side_menu/flutter_side_menu.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gap/gap.dart';
 import 'package:hugeicons/hugeicons.dart';
@@ -17,6 +18,7 @@ import 'package:noteapp/ui/widgets/notification_snackbar.dart';
 import 'package:noteapp/ui/widgets/primary_button.dart';
 import 'package:pie_menu/pie_menu.dart';
 import 'package:stacked/stacked.dart';
+import 'package:badges/badges.dart' as badges;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -40,6 +42,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   ];
 
   final List<Widget> _kTabPages = <Widget>[Container(), Container()];
+  final _controller = SideMenuController();
+  int _currentIndex = 0;
+  final String currencyCategory = 'KHR';
 
   @override
   void initState() {
@@ -104,117 +109,152 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       )
     ];
 
-    return PieCanvas(
-      theme: PieTheme(
-        delayDuration: duration,
-        overlayStyle: PieOverlayStyle.around,
-        buttonThemeHovered: PieButtonTheme(
-          backgroundColor: seedColorPalette.shade50,
-          iconColor: seedColor,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            boxShadow: [shadow],
-            color: seedColorPalette.shade100,
-          ),
-        ),
-        pointerColor: Colors.transparent,
-        angleOffset: 5,
-        childTiltEnabled: false,
-        rightClickShowsMenu: true,
-        tooltipTextStyle: AppTextStyles.h2,
-      ),
-      child: Scaffold(
-        bottomNavigationBar: PreferredSize(
-          preferredSize: Size.fromHeight(88.0),
-          child: UnconstrainedBox(
-            child: AnimatedContainer(
-              duration: duration,
-              curve: Curves.decelerate,
-              height: isPortraitOrientation
-                  ? tabBarHeight - _offsetAnimation.value
-                  : 56 - _offsetAnimation.value,
-              constraints: BoxConstraints(
-                // maxWidth: mediaWidth(context) - 50.0,
-                maxWidth: isPortraitOrientation
-                    ? mediaWidth(context) - 50.0
-                    : mediaWidth(context) / 1.5,
-              ),
-              margin: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 16.0),
-              clipBehavior: Clip.antiAlias,
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.7),
-                borderRadius:
-                    BorderRadius.circular(_borderRadiusAnimation.value),
-                boxShadow: [
-                  BoxShadow(
-                    color: seedColorPalette.shade100.withOpacity(0.5),
-                    blurRadius: 8.0,
-                    offset: Offset(0, 4.0),
-                  ),
-                ],
-              ),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 16.0, sigmaY: 16.0),
-                child: TabBar(
-                  controller: tabController,
-                  isScrollable: true,
-                  physics: const BouncingScrollPhysics(),
-                  splashBorderRadius: borderRadius * 5,
-                  overlayColor:
-                      WidgetStateProperty.all<Color>(seedColorPalette.shade100),
-                  splashFactory: InkRipple.splashFactory,
-                  indicator: isPortraitOrientation
-                      ? Theme.of(context).tabBarTheme.indicator
-                      : BoxDecoration(
-                          color: seedColor,
-                          borderRadius: borderRadius * 4,
-                        ),
-                  onTap: (index) {
-                    setState(() {
-                      currentPage = index;
-                    });
-                    if (index == 2) {
-                      Future.delayed(duration * 1.5, () {
-                        showDefaultDialog(
-                          context: context,
-                          icon: HugeIcons.strokeRoundedChatBot,
-                          title: "Before you proceed...",
-                          message: "Clezi is a bot that can help you with any "
-                              "questions you have. Please do not share any personal "
-                              "information with Clezi.",
-                          actions: [
-                            PrimaryButton.label(
-                              onPressed: () {
-                                context.popRoute();
-                              },
-                              label: "Agree and continue",
-                            )
-                          ],
-                        );
-                      });
-                    }
-                  },
-                  tabs: List.generate(
-                    _kTabPages.length,
-                    (index) {
-                      final icon = tabIcons[index];
-                      final title = tabNames[index];
-                      return TabBuilder(
-                        index: index,
-                        currentIndex: currentPage,
-                        icon: icon,
-                        title: title,
-                      );
-                    },
-                  ),
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 24.0, vertical: 4.0),
-                  dividerHeight: 0.0,
-                ),
-              ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Expend"),
+        actions: [
+          Container(
+            width: 48,
+            height: 48,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.orangeAccent,
+            ),
+            child: IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.add),
+              style: const ButtonStyle(),
             ),
           ),
+          SizedBox(
+            width: 24,
+          ),
+        ],
+      ),
+      drawer: Drawer(
+        child: ListView(
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Text(
+                'Drawer Header',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+              ),
+            )
+          ],
         ),
+      ),
+      body: Column(
+        children: [
+          Form(
+            child: Container(
+              padding: EdgeInsets.all(24),
+              child: Column(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade50,
+                      borderRadius: BorderRadius.circular(24),
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                              prefixIcon: Icon(
+                                Icons.attach_money_outlined,
+                                color: Colors.grey,
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: textPrimaryColor, width: .1),
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(24),
+                                    bottomLeft: Radius.circular(24)),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: textPrimaryColor, width: .1),
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(24),
+                                    bottomLeft: Radius.circular(24)),
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(24),
+                                    bottomLeft: Radius.circular(24)),
+                              ),
+                              // A
+                              hintText: 'Enter Amount',
+                            ),
+                          ),
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: textSecondaryColor,
+                            borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(24),
+                              bottomRight: Radius.circular(24),
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 20,
+                              vertical: 5,
+                            ),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton(
+                                iconEnabledColor: Colors.white,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                ),
+                                dropdownColor: textPrimaryColor,
+                                value: currencyCategory,
+                                items: ['USD', 'KHR']
+                                    .map((String value) => DropdownMenuItem(
+                                          value: value,
+                                          child: Row(
+                                            children: <Widget>[
+                                              Text(value),
+                                            ],
+                                          ),
+                                        ))
+                                    .toList(),
+                                onChanged: (value) {},
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 24,
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: textPrimaryColor, width: .1),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: textPrimaryColor, width: .1),
+                      ),
+                      border: OutlineInputBorder(), // A
+                      hintText: 'Mobile Number',
+                    ),
+                  )
+                ],
+              ),
+            ),
+          )
+        ],
       ),
     );
   }
@@ -225,7 +265,9 @@ class IconBottomItem extends StatelessWidget {
     super.key,
     required this.icon,
   });
+
   final HugeIcon icon;
+
   @override
   Widget build(BuildContext context) {
     return Container(

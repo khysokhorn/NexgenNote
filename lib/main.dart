@@ -1,7 +1,7 @@
-import 'package:noteapp/ui/views/Password/login.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:googleapis/calendar/v3.dart';
 import 'package:noteapp/ui/views/home/get_start_screen.dart';
 import 'core/services/global_service.dart';
 import 'core/utill/app_constants.dart';
@@ -50,9 +50,6 @@ class MyApp extends StatelessWidget {
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,
         localeResolutionCallback: (locale, supportedLocales) {
-          // NotificationService().sendTags({
-          //   'languageCode': locale?.languageCode,
-          // });
           return locale;
         },
         locale: context.locale,
@@ -66,10 +63,8 @@ class MyApp extends StatelessWidget {
             secondary: ACCENT_COLOR,
           ),
           splashColor: SECONDARY_COLOR,
-          // textTheme: GoogleFonts.robotoTextTheme(textTheme),
-          appBarTheme: const AppBarTheme(
-            color: PRIMARY_COLOR,
-            systemOverlayStyle: SystemUiOverlayStyle.light,
+          appBarTheme:  AppBarTheme(
+            systemOverlayStyle: SystemUiOverlayStyle.dark,
           ),
           indicatorColor: PRIMARY_COLOR,
           inputDecorationTheme: Theme.of(context).inputDecorationTheme,

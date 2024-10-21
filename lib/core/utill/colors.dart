@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const Color PRIMARY_COLOR = Color.fromARGB(0xFF, 0, 131, 72);
+const Color PRIMARY_COLOR = Color.fromARGB(0xFF, 253, 252, 252);
 const Color STATUS_BAR_COLOR = Color.fromARGB(255, 82, 177, 107);
 const Color SECONDARY_COLOR = Color.fromARGB(0xFF, 149, 193, 31);
 const Color ACCENT_COLOR = Color.fromARGB(0xFF, 255, 204, 0);
